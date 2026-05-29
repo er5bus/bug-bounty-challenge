@@ -45,7 +45,8 @@ export default class UserStore {
 
     if (result) {
       runInAction(() => {
-        this.urser = result;
+        // misspelled as "this.urser"
+        this.user = result;
       });
 
       return {
