@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { User } from "../../api/services/User/store";
 import AvatarMenu from "../AvatarMenu";
+import LanguageSwitcher from "../LanguageSwitcher";
 
 interface AppBarProps extends MuiAppBarProps {
   theme?: Theme;
@@ -43,9 +44,12 @@ const AppHeader = React.forwardRef((props: AppHeaderProps, ref) => {
   const countdownSeconds = (countdown % 60).toFixed(0).padStart(2, "0");
 
   useEffect(() => {
-    setInterval(() => {
+    // clear interval ID on unmount.
+    const intervalId = setInterval(() => {
       setCount((c) => c + 1);
     }, 1000);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   return (
@@ -79,7 +83,9 @@ const AppHeader = React.forwardRef((props: AppHeaderProps, ref) => {
               {pageTitle.toLocaleUpperCase()}
             </Typography>
           </Box>
-          <Box sx={{ flex: 1, justifyContent: "flex-end", display: "flex" }}>
+          { /* align items to center and gap between them */ }
+          <Box sx={{ flex: 1, justifyContent: "flex-end", display: "flex", alignItems: "center", gap: 1 }}>
+            <LanguageSwitcher />
             {user && user.eMail && (
               <Grow in={Boolean(user && user.eMail)}>
                 <AvatarMenu user={user} />
